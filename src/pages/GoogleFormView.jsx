@@ -9,7 +9,7 @@ const FormPage = () => {
   const [answers, setAnswers] = useState({});
   const [image, setImage] = useState(null); // State to handle image file separately
   const [showPopup, setShowPopup] = useState(false);
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://quizand-form-backend.vercel.app";
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -230,7 +230,9 @@ const FormPage = () => {
               className="px-4 py-2 bg-green-500 text-white rounded"
               onClick={() => {
                 setShowPopup(false);
-                localStorage.removeItem("token","url");
+                localStorage.removeItem("token");
+                localStorage.removeItem("url");
+                
                 navigate("/");
               }}
             >

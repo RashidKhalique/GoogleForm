@@ -22,7 +22,7 @@ const QuizForm = () => {
   const [newOption, setNewOption] = useState('');
   const [submitdata, setSubmitdata] = useState([]);
   const [userNames, setUserNames] = useState([]);
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://quizand-form-backend.vercel.app";
   const navigate = useNavigate()
   const token = localStorage.getItem('token');
 

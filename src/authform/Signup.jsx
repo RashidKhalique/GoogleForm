@@ -28,7 +28,7 @@ function Signup() {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/api/signup', payload);
+      const response = await axios.post('https://quizand-form-backend.vercel.app/api/signup', payload);
       setMessage(response.data.success ? `Success: ${response.data.message}` : `Error: ${response.data.message}`);
       toast.success("You're Signup Successfully")
       setTimeout(() => {

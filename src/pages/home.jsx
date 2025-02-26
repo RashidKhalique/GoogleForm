@@ -11,7 +11,7 @@ const Home = () => {
   const [isOnline, setIsOnline] = useState(true);
   const token = localStorage.getItem("token");
   const name = localStorage.getItem("name");
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "https://quizand-form-backend.vercel.app";
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {

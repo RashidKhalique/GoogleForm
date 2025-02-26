@@ -23,7 +23,7 @@ function Login() {
     const password = passwordRef.current.value;
 
     try {
-      const response = await axios.post('http://localhost:3000/api/login', { email, password });
+      const response = await axios.post('https://quizand-form-backend.vercel.app/api/login', { email, password });
 
       const token = response.data.token;  
 
