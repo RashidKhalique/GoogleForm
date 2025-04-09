@@ -7,12 +7,14 @@ import { FaCheckCircle } from "react-icons/fa";
 const FormPage = () => {
   const [formData, setFormData] = useState(null);
   const [answers, setAnswers] = useState({});
-  const [image, setImage] = useState(null); // State to handle image file separately
+  // const [image, setImage] = useState(null); // State to handle image file separately
   const [showPopup, setShowPopup] = useState(false);
   const baseUrl = "https://quizand-form-backend.vercel.app";
+  // const baseUrl = "http://localhost:3000";
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  // console.log("formdata",formData)
 
   useEffect(() => {
     const fetchFormData = async () => {
@@ -48,16 +50,16 @@ const FormPage = () => {
     }));
 
     const formDataToSend = new FormData();
-    formDataToSend.append("formId", formData.id);
+    // formDataToSend.append("formId", formData.id);
     formDataToSend.append("answers", JSON.stringify(submittedAnswers));
     formDataToSend.append("id", id);
     formDataToSend.append("submit", true);
-    if (image) {
-      formDataToSend.append("image", image);
-    }
+    // if (image) {
+    //   formDataToSend.append("image", image);
+    // }
 
     try {
-      const response = await axios.post(`${baseUrl}/api/quiz/submitForm`, formDataToSend, {
+      const response = await axios.post(`${baseUrl}/api/quiz/submitForm`, {submit:true,id:id,answers:submittedAnswers}, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -75,6 +77,52 @@ const FormPage = () => {
       toast.error(error.response.data.message);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   const submittedAnswers = formData.questions.map((question) => ({
+  //     question: question.question,
+  //     type: question.type,
+  //     answer: answers[question.id],
+  //   }));
+
+    
+  //   const formDataToSend = new FormData();
+   
+  //   // formDataToSend.append("formId", id);
+  //   formDataToSend.append("answers", JSON.stringify(submittedAnswers));
+  //   formDataToSend.append("id", id);
+  //   formDataToSend.append("submit", "true");
+  //   console.log("formDatatoSend",formDataToSend);
+  //   // for (let [key, value] of formDataToSend.entries()) {
+  //   //   console.log(`${key}:`, value);
+  //   // }
+  //   console.log(answers);
+  //   console.log(id);
+  //   // console.log(submit);
+    
+    
+  
+  //   try {
+  //     const response = await axios.post(`${baseUrl}/api/quiz/submitForm`, {answers,id,submit:true}, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+  
+  //     if (response.data.success) {
+  //       toast.success("Form submitted successfully!");
+  //       setShowPopup(true);
+  //     } else {
+  //       toast.error(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error.response?.data || error.message);
+  //     toast.error(error.response?.data?.message || "Something went wrong!");
+  //   }
+  // };
 
   if (!formData) {
     return <div className="text-center mt-10">Loading form...</div>;

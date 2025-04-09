@@ -169,7 +169,7 @@ const Home = () => {
                         {formData.Form.questions ? formData.Form.questions.length : 0}
                       </td>
                       <td className="border-b py-4 flex space-x-2 justify-center">
-                        <button className="px-4 py-2 bg-[#60665d] hover:bg-[#593495] rounded text-white" onClick={() => copyToClipboard(`http://localhost:5173/viewform/${formData._id}`)} >
+                        <button className="px-4 py-2 bg-[#60665d] hover:bg-[#593495] rounded text-white" onClick={() => copyToClipboard(`https://google-form-chi-ashy.vercel.app/viewform/${formData._id}`)} >
                           <FontAwesomeIcon
                             icon={faCopy}
                             className="text-white cursor-pointer"
