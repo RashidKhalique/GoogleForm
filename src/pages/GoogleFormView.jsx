@@ -7,7 +7,7 @@ import { FaCheckCircle } from "react-icons/fa";
 const FormPage = () => {
   const [formData, setFormData] = useState(null);
   const [answers, setAnswers] = useState({});
-  // const [image, setImage] = useState(null); // State to handle image file separately
+  const [image, setImage] = useState(null); // State to handle image file separately
   const [showPopup, setShowPopup] = useState(false);
   const baseUrl = "https://quizand-form-backend.vercel.app";
   // const baseUrl = "http://localhost:3000";
