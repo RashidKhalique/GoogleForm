@@ -40,43 +40,43 @@ const FormPage = () => {
     setImage(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    const submittedAnswers = formData.questions.map((question) => ({
-      question: question.question,
-      type: question.type,
-      answer: answers[question.id],
-    }));
+  //   const submittedAnswers = formData.questions.map((question) => ({
+  //     question: question.question,
+  //     type: question.type,
+  //     answer: answers[question.id],
+  //   }));
 
-    const formDataToSend = new FormData();
-    // formDataToSend.append("formId", formData.id);
-    formDataToSend.append("answers", JSON.stringify(submittedAnswers));
-    formDataToSend.append("id", id);
-    formDataToSend.append("submit", true);
-    // if (image) {
-    //   formDataToSend.append("image", image);
-    // }
+  //   const formDataToSend = new FormData();
+  //   // formDataToSend.append("formId", formData.id);
+  //   formDataToSend.append("answers", JSON.stringify(submittedAnswers));
+  //   formDataToSend.append("id", id);
+  //   formDataToSend.append("submit", true);
+  //   // if (image) {
+  //   //   formDataToSend.append("image", image);
+  //   // }
 
-    try {
-      const response = await axios.post(`${baseUrl}/api/quiz/submitForm`, {submit:true,id:id,answers:submittedAnswers}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+  //   try {
+  //     const response = await axios.post(`${baseUrl}/api/quiz/submitForm`, {submit:true,id:id,answers:submittedAnswers}, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
 
-      if (response.data.success) {
-        toast.success("Form submitted successfully!");
-        setShowPopup(true);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error(error.response.data.message);
-    }
-  };
+  //     if (response.data.success) {
+  //       toast.success("Form submitted successfully!");
+  //       setShowPopup(true);
+  //     } else {
+  //       toast.error(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //     toast.error(error.response.data.message);
+  //   }
+  // };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -123,6 +123,67 @@ const FormPage = () => {
   //     toast.error(error.response?.data?.message || "Something went wrong!");
   //   }
   // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Format answers properly, including checkboxes
+    const submittedAnswers = formData.questions.map((question) => {
+      let answer = answers[question.id];
+  
+      if (question.type === "checkbox" && typeof answer === "object") {
+        answer = Object.keys(answer).filter((key) => answer[key]);
+      }
+  
+      if (typeof answer === "undefined") {
+        answer = question.required ? null : "";
+      }
+  
+      return {
+        question: question.question,
+        type: question.type,
+        answer,
+      };
+    });
+  
+    // Debug: see submitted answers
+    console.log("submittedAnswers:", submittedAnswers);
+  
+    // Prepare FormData
+    const formDataToSend = new FormData();
+    formDataToSend.append("id", id);
+    formDataToSend.append("answers", JSON.stringify(submittedAnswers));
+    formDataToSend.append("submit", "true");
+  
+    if (image) {
+      formDataToSend.append("image", image);
+    }
+  
+    // Debug: view FormData entries
+    for (let [key, value] of formDataToSend.entries()) {
+      console.log(`${key}:`, value);
+    }
+  
+    try {
+      const response = await axios.post(`${baseUrl}/api/quiz/submitForm`, formDataToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      if (response.data.success) {
+        toast.success("Form submitted successfully!");
+        setShowPopup(true);
+      } else {
+        toast.error(response.data.message || "Submission failed.");
+      }
+    } catch (error) {
+      console.error("Submission error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Something went wrong!");
+    }
+  };
+  
 
   if (!formData) {
     return <div className="text-center mt-10">Loading form...</div>;
