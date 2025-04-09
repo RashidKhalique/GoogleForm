@@ -155,9 +155,9 @@ const FormPage = () => {
     formDataToSend.append("answers", JSON.stringify(submittedAnswers));
     formDataToSend.append("submit", "true");
   
-    if (image) {
-      formDataToSend.append("image", image);
-    }
+    // if (image) {
+    //   formDataToSend.append("image", image);
+    // }
   
     // Debug: view FormData entries
     for (let [key, value] of formDataToSend.entries()) {
